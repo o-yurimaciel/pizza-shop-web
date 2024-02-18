@@ -1,3 +1,4 @@
+import { OrderStatus } from '@/components/order-status'
 import {
   DialogContent,
   DialogDescription,
@@ -14,8 +15,6 @@ import {
   TableRow,
 } from '@/components/ui/table'
 
-import { OrderStatus } from './order-status'
-
 export function OrderDetails() {
   return (
     <DialogContent>
@@ -30,7 +29,7 @@ export function OrderDetails() {
             <TableRow>
               <TableCell className="text-muted-foreground">Status</TableCell>
               <TableCell className="flex justify-end">
-                <OrderStatus />
+                <OrderStatus status="processing" />
               </TableCell>
             </TableRow>
 

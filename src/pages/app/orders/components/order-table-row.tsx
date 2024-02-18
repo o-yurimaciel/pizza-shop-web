@@ -1,13 +1,25 @@
+import { formatDistanceToNow } from 'date-fns'
+import { enUS } from 'date-fns/locale'
 import { ArrowRight, Search, X } from 'lucide-react'
 
+import { OrderStatus } from '@/components/order-status'
 import { Button } from '@/components/ui/button'
 import { Dialog, DialogTrigger } from '@/components/ui/dialog'
 import { TableCell, TableRow } from '@/components/ui/table'
 
 import { OrderDetails } from './order-details'
-import { OrderStatus } from './order-status'
 
-export function OrderTableRow() {
+export interface OrderTableRowProps {
+  order: {
+    orderId: string
+    createdAt: string
+    status: 'pending' | 'canceled' | 'processing' | 'delivering' | 'delivered'
+    customerName: string
+    total: number
+  }
+}
+
+export function OrderTableRow({ order }: OrderTableRowProps) {
   return (
     <TableRow>
       <TableCell>
@@ -22,18 +34,28 @@ export function OrderTableRow() {
         </Dialog>
       </TableCell>
       <TableCell className="font-mono text-xs font-medium">
-        SJIJS938EDKLKKFD
+        {order.orderId}
       </TableCell>
-      <TableCell className="text-muted-foreground">15 min ago</TableCell>
+      <TableCell className="text-muted-foreground">
+        {formatDistanceToNow(order.createdAt, {
+          locale: enUS,
+          addSuffix: true,
+        })}
+      </TableCell>
       <TableCell>
-        <OrderStatus />
+        <OrderStatus status={order.status} />
       </TableCell>
-      <TableCell className="font-medium">Yuri Maciel</TableCell>
-      <TableCell className="font-medium">$ 150</TableCell>
+      <TableCell className="font-medium">{order.customerName}</TableCell>
+      <TableCell className="font-medium">
+        {order.total.toLocaleString('en-US', {
+          style: 'currency',
+          currency: 'USD',
+        })}
+      </TableCell>
       <TableCell>
         <Button variant="outline" size="xs">
           <ArrowRight className="mr-2 h-3 w-3" />
-          Aprovar
+          Approve
         </Button>
       </TableCell>
       <TableCell>
